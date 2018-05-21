@@ -2,7 +2,7 @@
 
 ## Develop
 ```sh
-VIS_API_HOST={} yarn start
+REACT_APP_API_HOST={} yarn start
 ```
 
 ## commit checking

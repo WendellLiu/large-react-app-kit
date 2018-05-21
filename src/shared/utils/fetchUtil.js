@@ -6,7 +6,7 @@ import {
 import humps from 'humps';
 
 
-const API_HOST: string = process.env.VIS_API_HOST || '';
+const API_HOST: string = process.env.REACT_APP_API_HOST || '';
 
 type GenTokenHeader = (token? : string) => {
   Authorization?: string,
