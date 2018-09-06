@@ -7,30 +7,20 @@ import {
   LOG_IN_CALLBACK,
 } from '../actions/types';
 
-import type {
-  SetToken,
-  SetProfile,
-} from '../actions/authActions';
+import type { SetToken, SetProfile } from '../actions/authActions';
 
-import type {
-  Profile,
-  Token,
-  LoginStatus,
-} from '../shared/types/authTypes';
+import type { Profile, Token, LoginStatus } from '../shared/types/authTypes';
 
-import {
-  LOGIN_STATUS,
-} from '../shared/constants';
+import { LOGIN_STATUS } from '../shared/constants';
 
 export type State = {
   +token: ?Token,
   +profile: ?Profile,
   +tryToLoadToken: boolean,
-  +loginStatus: LoginStatus
+  +loginStatus: LoginStatus,
 };
 
-type Action = SetToken
-  | SetProfile;
+type Action = SetToken | SetProfile;
 
 const initialState = {
   token: null,

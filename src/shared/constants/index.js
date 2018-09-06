@@ -5,7 +5,7 @@ export const NODE_ENV: string = process.env.NODE_ENV || DEVELOPMENT;
 
 export type FetchStatus = 'NOT_FETCHED' | 'FETCHING' | 'FETCH_SUCCESS' | 'FETCH_FAILURE';
 export const FETCH_STATUS_MAP: {
-  [key: string]: FetchStatus
+  [key: string]: FetchStatus,
 } = {
   NOT_FETCHED: 'NOT_FETCHED',
   FETCHING: 'FETCHING',

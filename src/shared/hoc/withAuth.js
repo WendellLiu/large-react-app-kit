@@ -16,6 +16,4 @@ const mapStateToProps = createStructuredSelector({
   loginStatus: getLoginStatus,
 });
 
-export default connect(
-  mapStateToProps,
-);
+export default connect(mapStateToProps);

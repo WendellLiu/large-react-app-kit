@@ -1,18 +1,9 @@
 // @flow
-import {
-  prop,
-  compose,
-} from 'ramda';
+import { prop, compose } from 'ramda';
 
-import type {
-  AllState,
-} from '../reducers';
+import type { AllState } from '../reducers';
 
-import type {
-  Profile,
-  Token,
-  LoginStatus,
-} from '../shared/types/authTypes';
+import type { Profile, Token, LoginStatus } from '../shared/types/authTypes';
 
 const fromAuth: AllState => any = prop('auth');
 
@@ -28,7 +19,7 @@ export const getProfile: GetProfile = compose(
   fromAuth,
 );
 
-type GetUserId = AllState => $PropertyType <Profile, 'id'>
+type GetUserId = AllState => $PropertyType<Profile, 'id'>;
 export const getUserId: GetUserId = compose(
   prop('id'),
   getProfile,

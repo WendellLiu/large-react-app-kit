@@ -2,16 +2,13 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 
-import {
-  LOG_OUT_CALLBACK,
-} from '../actions/types';
+import { LOG_OUT_CALLBACK } from '../actions/types';
 import authReducer from './authReducer';
-
 
 export type AllState = {
   auth: mixed,
   router: mixed,
-}
+};
 
 type AppReducers = (allState?: AllState, action: { type: string }) => AllState;
 
@@ -20,9 +17,12 @@ const appReducers: AppReducers = combineReducers({
   router: routerReducer,
 });
 
-type Reducers = (state: AllState, action: {
-  type: string,
-}) => AllState;
+type Reducers = (
+  state: AllState,
+  action: {
+    type: string,
+  },
+) => AllState;
 
 const reducers: Reducers = (state, action) => {
   switch (action.type) {
