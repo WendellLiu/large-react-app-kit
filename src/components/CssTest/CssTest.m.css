@@ -1,0 +1,11 @@
+.container {
+  background: slateblue;
+  height: 500px;
+  width: 500px;
+}
+
+.card {
+  background: wheat;
+  height: 300px;
+  width: 300px;
+}

@@ -8,11 +8,11 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
+const incstr = require('incstr');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 const merge = require('webpack-merge');
 const baseConfig = require('./webpack.config.base');
-
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -46,8 +46,36 @@ const entry = {
       // initialization, it doesn't blow up the WebpackDevServer client, and
       // changing JS code would still trigger a refresh.
     ],
-  }
-}
+  },
+};
+
+const generateScopedName = () => {
+  let pathPool = {};
+
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const idGenerator = incstr.idGenerator({
+    alphabet: alphabet.concat(alphabet.toLowerCase()),
+  });
+
+  return (localName, resourcePath) => {
+    const key = `${resourcePath}_${localName}`;
+    const id = pathPool[key];
+
+    if (id) return id;
+
+    const upcomingId = idGenerator();
+    pathPool = Object.assign(
+      {},
+      {
+        [key]: upcomingId,
+      },
+    );
+
+    return upcomingId;
+  };
+};
+
+const genLocalIdent = generateScopedName();
 
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.
@@ -62,8 +90,8 @@ const config = {
   output: {
     // Next line is not used in dev but WebpackDevServer crashes without it:
     path: paths.appBuild,
-    // Add /* filename */ comments to generated require()s in the output.
     pathinfo: true,
+    // Add /* filename */ comments to generated require()s in the output.
     // This does not produce a real file. It's just the virtual path that is
     // served by WebpackDevServer in development. This is the JS bundle
     // containing code from all our entry points, and the Webpack runtime.
@@ -93,7 +121,6 @@ const config = {
             options: {
               formatter: eslintFormatter,
               eslintPath: require.resolve('eslint'),
-
             },
             loader: require.resolve('eslint-loader'),
           },
@@ -122,7 +149,6 @@ const config = {
             include: paths.appSrc,
             loader: require.resolve('babel-loader'),
             options: {
-
               // This is a feature of `babel-loader` for webpack (not Babel itself).
               // It enables caching results in ./node_modules/.cache/babel-loader/
               // directory for faster rebuilds.
@@ -143,7 +169,8 @@ const config = {
                 options: {
                   modules: true,
                   importLoaders: 1,
-                  localIdentName: '[path]___[name]__[local]___[hash:base64:5]',
+                  getLocalIdent: (context, localIdentName, localName) =>
+                    genLocalIdent(localName, context.resourcePath),
                 },
               },
               {
@@ -211,8 +238,8 @@ const config = {
             use: [
               {
                 loader: require.resolve('svg-react-loader'),
-              }
-            ]
+              },
+            ],
           },
           // "file" loader makes sure those assets get served by WebpackDevServer.
           // When you `import` an asset, you get its (virtual) filename.
@@ -287,8 +314,4 @@ const config = {
   },
 };
 
-module.exports = merge.smart(
-  entry,
-  baseConfig,
-  config,
-);
+module.exports = merge.smart(entry, baseConfig, config);
